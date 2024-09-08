@@ -1,9 +1,30 @@
-import os
-import json
-import numpy as np
-from rouge_score import rouge_scorer, scoring
-DATA_DIR = os.path.join("./curated-data")
+import ollama
 
-TRAIN_DS = os.path.join(DATA_DIR, "law-qa-train.jsonl")
-VAL_DS = os.path.join(DATA_DIR, "law-qa-val.jsonl")
-TEST_DS = os.path.join(DATA_DIR, "law-qa-test.jsonl")
+def chat_with_llama3():
+    print("************************")
+    print("Welcome to llama3 chatbot")
+    print("Enter 'exit' to leave the chat")
+    print("************************",end="")
+    while True:
+        user_input = input("\nYou: ")
+        if user_input.lower() == 'exit':
+            print("Ending chat. Goodbye!")
+            break
+        llama_response = send_to_llama3(user_input)
+        print("Llama-3: " + llama_response)
+
+def send_to_llama3(user_input):
+    llama_response = ollama.chat(
+    model="llama3",
+    messages=[
+        {
+            "role": "user",
+            "content": user_input,
+        },
+    ],
+    )
+  
+    return llama_response["message"]["content"]
+
+# Start the chat
+chat_with_llama3()
